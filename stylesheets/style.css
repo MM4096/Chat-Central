@@ -1,0 +1,124 @@
+.loginPage {
+    background-color: #00004b;
+    text-align: center;
+}
+
+/* All contents are centre aligned, and text is white */
+.loginPage > * {
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.loginPage > input {
+    border: solid 1px #333399;
+    background-color: #4444aa;
+}
+
+.loginPage > button {
+    background-color: #4444aa;
+    border: solid 1px #333399;
+}
+
+.loginPage > button:active {
+    background-color: #6666cc;
+}
+
+.error {
+    color: #ff0000;
+}
+
+/* Making inputs italics for different browsers */
+::-webkit-input-placeholder {
+    font-style: italic;
+ }
+ :-moz-placeholder {
+    font-style: italic;  
+ }
+ ::-moz-placeholder {
+    font-style: italic;  
+ }
+ :-ms-input-placeholder {  
+    font-style: italic; 
+ }
+
+ @media screen and (max-width: 600px) {
+    .loginPage > h1 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 40px;
+    }
+    .loginPage > input {
+        width: 80%;
+        font-size: 18px;
+        height: 50px;
+    }
+    .loginPage > button {
+        width: 30%;
+        font-size: 25px;
+    }
+    .loginPage > a {
+        font-size: 15px;
+    }
+ }
+
+ @media screen and (min-width: 600px) {
+    .loginPage > h1 {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        font-size: 40px;
+    }
+    .loginPage > input {
+        width: 60%;
+        font-size: 18px;
+        height: 50px;
+    }
+    .loginPage > button {
+        width: 30%;
+        font-size: 25px;
+    }
+    .loginPage > a {
+        font-size: 15px;
+    }
+    
+  }
+
+  @media screen and (min-width: 992px) {
+    .loginPage > h1 {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        font-size: 40px;
+    }
+    .loginPage > input {
+        width: 60%;
+        font-size: 18px;
+        height: 50px;
+    }
+    .loginPage > button {
+        width: 30%;
+        font-size: 25px;
+    }
+    .loginPage > a {
+        font-size: 15px;
+    }
+    
+  }
+
+  @media screen and (min-width: 1200px) {
+    .loginPage > h1 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 50px;
+    }
+    .loginPage > input {
+        width: 50%;
+        font-size: 30px;
+        height: 75px;
+    }
+    .loginPage > button {
+        width: 30%;
+        height: 50px;
+    }
+    .loginPage > a {
+        font-size: 25px;
+    }
+  }
