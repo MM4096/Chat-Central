@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
@@ -15,18 +15,6 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth();
+const user = auth.currentUser;
 
-function CreateUser() {
-	createUserWithEmailAndPassword(auth, $("#email").val(), $("#password").val())
-	.then((userCredential) => {
-		const user = userCredential.user;
-	})
-	.catch ((error) => {
-		const errorCode = error.code;
-		const errorMessage = error.message;
-		console.error("Error: " + errorMessage);
-	}) 
-}
-
-// because all the functions are scope-leveled, this changes it to window leveled.
-window.CreateUser = CreateUser;
+console.log(user);

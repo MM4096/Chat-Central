@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
@@ -15,9 +15,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth();
+setPersistence(auth, browserSessionPersistence)
 
 function Login() {
-    signInWithEmailAndPassword(auth, $("#email").val(), $("#password").val())
+    email = $("#email").val();
+    password = $("#password").val();
+    signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
@@ -26,6 +29,23 @@ function Login() {
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        let errorDisplay;
+        switch (errorCode) {
+            case "auth/invalid-email":
+                errorDisplay = "Error: Invalid email";
+            break;
+            case "auth/user-not-found":
+                errorDisplay = "Error: No account with that email";
+            break;
+            case "auth/wrong-password":
+                errorDisplay = "Error: Incorrect password";
+            break;
+            default:
+                errorDisplay = "An unknown error occured. Check the console for more details";
+                console.error(errorMessage);
+            break;
+        }
+        $("#error").text(errorDisplay);
     });
 }
 

@@ -1,6 +1,6 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
-import { getDatabase } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
     apiKey: "AIzaSyCgebjp9UWGlH-gMBp0MVYJ8thoXqglt-Q",
@@ -32,6 +32,10 @@ function CreateUser() {
         .then((userCredential) => {
             const user = userCredential.user;
             $("#error").text("");
+            set(ref(db, "users/" + email), {
+                username: username,
+                userId: user.uid,
+            })
         })
         .catch ((error) => {
             const errorCode = error.code;
@@ -48,9 +52,10 @@ function CreateUser() {
                 break;
                 default:
                     errorMessage = "An unknown error occured"
+                    console.log(errorMessage);
                 break;
             }
-            $("#error").text("Error: " + errorMessage);
+            $("#error").text("Error: " + error.message);
         }) 
     }
 }
