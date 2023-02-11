@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import { getAuth, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
@@ -15,6 +15,40 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth();
+
+function Login() {
+    setPersistence(auth, browserLocalPersistence).then(() => {
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            console.log(user);
+            console.log("Logged in!");
+            window.location.href='index.html';
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            let errorDisplay;
+            switch (errorCode) {
+                case "auth/invalid-email":
+                    errorDisplay = "Error: Invalid email";
+                break;
+                case "auth/user-not-found":
+                    errorDisplay = "Error: No account with that email";
+                break;
+                case "auth/wrong-password":
+                    errorDisplay = "Error: Incorrect password";
+                break;
+                default:
+                    errorDisplay = "An unknown error occured. Check the console for more details";
+                    console.error(errorMessage);
+                break;
+            }
+            $("#error").text(errorDisplay);
+        });
+    })
+}
 
 function CreateUser() {
     const email = $("#email").val();
@@ -32,10 +66,11 @@ function CreateUser() {
         .then((userCredential) => {
             const user = userCredential.user;
             $("#error").text("");
-            set(ref(db, "users/" + email), {
+            set(ref(db, "users/" + user.uid), {
                 username: username,
-                userId: user.uid,
+                email: email,
             })
+            Login();
         })
         .catch ((error) => {
             const errorCode = error.code;

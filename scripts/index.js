@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
@@ -15,6 +15,11 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth();
-const user = auth.currentUser;
 
-console.log(user);
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log(user);
+  } else {
+    console.log("User is signed out");
+  }
+});
