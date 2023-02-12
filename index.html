@@ -7,9 +7,17 @@
     <link rel="stylesheet" href="stylesheets/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-<body>
-    <a href="login.html">Log in!</a>
-    
+<body class="indexPage">
+    <div class="navbar">
+        <img src="images/logo.png" alt="Logo">
+        <button onclick="window.location.href='login.html';"><h2>Log in</h2></button>
+        <button onclick="window.location.href='register.html';"><h2>Sign up</h2></button>
+    </div>
+    <h1>Chat Central</h1>
+    <p>It's the online chat app designed to bring an end to all other chat apps
+        <br><br>
+        <a href="register.html">Sign up</a> or <a href="login.html">Log in</a>
+    </p>
     <script src="scripts/index.js" type="module"></script>
 </body>
 </html>
