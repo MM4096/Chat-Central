@@ -19,6 +19,7 @@ const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
   if (user) {
     console.log(user);
+    window.location.href = "chat.html";
   } else {
     console.log("User is signed out");
   }

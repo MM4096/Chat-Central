@@ -85,6 +85,56 @@ a:hover {
     text-decoration: underline;
 }
 
+.userList {
+    float: left;
+    height: 100%;
+}
+
+.userList > button {
+    width: 95%;
+}
+
+.chat {
+    position: relative;
+    float: right;
+}
+
+.chat > * {
+    display: inline-block;
+}
+
+.chat > #back {
+    width: 0;
+    height: 0;
+}
+
+.chat > input {
+    color: #ffffff;
+    border: solid 1px #333399;
+    background-color: #4444aa;
+}
+
+.messageBox {
+    /* overflow: auto adds a scrollbar */
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.selectedUser {
+    background-color: #7777dd;
+}
+
+.message {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.message:hover {
+    background-color: #11115b;
+}
+
 /* Making inputs italics for different browsers */
 ::-webkit-input-placeholder {
     font-style: italic;
@@ -98,6 +148,10 @@ a:hover {
  :-ms-input-placeholder {  
     font-style: italic; 
  }
+ ::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+}
 
  @media screen and (max-width: 600px) {
     .loginPage > h1 {
@@ -137,6 +191,52 @@ a:hover {
         padding-right: 20px;
     }
 
+    .userList {
+        width: 100%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 100%;
+        height: 99%;
+    }
+
+    .chat > #back {
+        width: 100px;
+        height: 50px;
+    }
+
+    .chat > input {
+        width: 80%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 18%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: calc(95% - 50px);
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
+    }
+
  }
 
  @media screen and (min-width: 600px) {
@@ -166,6 +266,47 @@ a:hover {
         font-size: 25px;
         width: 80%;
         margin-left: 10%;
+    }
+
+    .userList {
+        width: 30%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 69%;
+        height: 99%;
+    }
+
+    .chat > input {
+        width: 85%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 13%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: 95%;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
     }
     
   }
@@ -197,6 +338,47 @@ a:hover {
         font-size: 25px;
         width: 80%;
         margin-left: 10%;
+    }
+
+    .userList {
+        width: 25%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 74%;
+        height: 99%;
+    }
+
+    .chat > input {
+        width: 90%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 8%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: 95%;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
     }
     
   }
@@ -230,4 +412,44 @@ a:hover {
         margin-left: 10%;
     }
 
+    .userList {
+        width: 20%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 79%;
+        height: 99%;
+    }
+
+    .chat > input {
+        width: 90%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 8%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: 95%;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
+    }
   }
