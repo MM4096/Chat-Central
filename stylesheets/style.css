@@ -6,6 +6,10 @@ button {
     border-radius: 25px;
 }
 
+input {
+    border-radius: 20px;
+}
+
 .loginPage {
     text-align: center;
 }

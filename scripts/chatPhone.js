@@ -15,10 +15,12 @@ $(document).ready(function() {
     if (WindowDimensions.width < 600) {
         $("#chat").hide();
         $("#userList").show();
+        $("#back").show();
     }
     else {
         $("#chat").show();
         $("#userList").show();
+        $("#back").hide();
     }
 });
 
@@ -27,10 +29,12 @@ $(window).resize(function() {
     if (WindowDimensions.width < 600) {
         $("#chat").hide();
         $("#userList").show();
+        $("#back").show();
     }
     else {
         $("#chat").show();
         $("#userList").show();
+        $("#back").hide();
     }
 });
 
