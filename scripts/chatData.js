@@ -17,6 +17,8 @@ const db = getDatabase();
 const auth = getAuth();
 const dbRef = ref(db);
 let user;
+let currentChatId = null;
+let currentChatData = get(child(dbRef, "/users"));
 
 onAuthStateChanged(auth, (_user) => {
 	if (_user) {
@@ -45,7 +47,7 @@ $(document).ready(function () {
 								buttonText += ", ";
 							}
 							buttonText += _snapshot.val().username;
-							$("#userList").append('<button chatId="' + childSnapshot.key + '">' + buttonText + '</button>');
+							$("#userList").append('<button onclick="OpenChat(`' + childSnapshot.key + '`)">' + buttonText + '</button>');
 						})
 					}
 				}
@@ -55,4 +57,23 @@ $(document).ready(function () {
 		.catch((error) => {
 			console.log(error);
 		})
+});
+
+function LoadChat(chatId) {
+	currentChatId = chatId;
+	currentChatData = get(child(dbRef, "chats/" + chatId + "/messages/"));
+	console.log("reached");
+}
+
+window.LoadChat = LoadChat;
+
+
+currentChatData.on("child_added", (snapshot) => {
+	try {
+		const messages = snapshot.val();
+		console.log(messages);
+	}
+	catch (error) {
+        console.log(error);
+    }
 });

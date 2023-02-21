@@ -38,11 +38,12 @@ $(window).resize(function() {
     }
 });
 
-function OpenChat() {
+function OpenChat(chatId) {
     if (WindowDimensions.width < 600) {
         $("#chat").show();
         $("#userList").hide();
     }
+    LoadChat(chatId);
 }
 
 function Back() {
