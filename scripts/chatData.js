@@ -1,6 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
-import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
+import {getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import {child, get, getDatabase, onValue, ref} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
 	apiKey: "AIzaSyCgebjp9UWGlH-gMBp0MVYJ8thoXqglt-Q",
@@ -34,7 +34,6 @@ $(document).ready(function () {
 
 const LoadEventHandlers = async () => {
 	const result = await GetChats();
-	console.log("All chats gotten");
 }
 
 function GetChats() {
@@ -48,12 +47,12 @@ function GetChats() {
 			// see if user is part of the chat
 			if (key.indexOf(currentUid) !== -1) {
 				// if user is part of the chat, then get the other user's user id, and add it to the list
-				if (key.indexOf(currentUid) == 0) {
-					paths.push("users/" + key[1] + "/");
+				if (key.indexOf(currentUid) === 0) {
+					paths.push(key[1]);
 					chatIds.push(childSnapshot.key);
 				}
 				else {
-					paths.push("users/" + key[0] + "/");
+					paths.push(key[0]);
 					chatIds.push(childSnapshot.key);
 				}
 			}
@@ -61,10 +60,7 @@ function GetChats() {
 		const promises = [];
 		paths.forEach((path) => {
 			promises.push(new Promise((resolve) => {
-				console.log(path);
-				// TODO: get reference correct
 				const reference = ref(db, path);
-				console.log(reference);
 				get(child(reference, "/username/")).then((snapshot) => {
                     const data = snapshot.val();
 					resolve(data);
@@ -78,21 +74,17 @@ function GetChats() {
 			});
 			let buttons = $(".chatButtons");
 			for (let i = 0; i < buttons.length; i++) {
-				console.log("got through here fine");
 				$(buttons[i]).on("click", function() {
 					const path =$(this).attr("data-chatId");
-					const chatRef = ref(db, "chats/" + path);
-					// disconnect old event listener
-					try {
-						chatRef.off();
-					}
-					catch (error) {
-						console.log(error);
-					}
+					const chatRef = ref(db, "chats/" + path + "/messages/");
 					// add new event listener
-					chatRef.on("child_added", (snapshot) => {
-						const data = snapshot.val();
-						console.log(data);
+					onValue(chatRef, (snapshot) => {
+						snapshot.forEach((msgContainer) => {
+							console.log("Message timestamp: " + msgContainer.key);
+							console.log("Message: " + msgContainer.child("message").val());
+							console.log("User: " + GetUsername(msgContainer.child("from")));
+						})
+
 					})
 				});
 			}
@@ -103,27 +95,16 @@ function GetChats() {
 		console.log(error);
 	})
 }
-
-function buttontextcode() {
-	let buttonText = "";
-				// finding other users in the chat
-				for (let i = 0; i < key.length; i++) {
-					if (i !== key.indexOf(currentUid)) {
-						get(child(dbRef, "users/" + key[i])).then((_snapshot) => {
-							console.log(_snapshot.val().username);
-							if (buttonText != "") {
-								buttonText += ", ";
-							}
-							buttonText += _snapshot.val().username;
-							$("#userList").append('<button onclick="OpenChat(`' + childSnapshot.key + '`)">' + buttonText + '</button>');
-						})
-					}
-				}
-}
-
 function LoadChat(chatId) {
 	currentChatId = chatId;
 	console.log("reached");
+}
+
+function GetUsername(userid) {
+	const reference = ref(db, "users/" + userid + "/")
+	get(child(reference, "/username/")).then((snapshot) => {
+		return snapshot.val();
+	});
 }
 
 window.LoadChat = LoadChat;
