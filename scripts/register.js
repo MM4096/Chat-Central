@@ -55,10 +55,10 @@ function CreateUser() {
     const username = $("#username").val();
     const password = $("#password").val();
     const confirmPassword = $("#confirmPassword").val();
-    if (username == "") {
+    if (username === "") {
         $("#error").text("Error: No username was entered");
     }
-    else if (password != confirmPassword) {
+    else if (password !== confirmPassword) {
         $("#error").text("Error: Your passwords don't match");
     }
     else {

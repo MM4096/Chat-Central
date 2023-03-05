@@ -1,6 +1,6 @@
-import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
-import {getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
-import {child, get, getDatabase, onValue, ref} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import { initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
+import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
+import { child, get, getDatabase, onValue, ref, set } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
 	apiKey: "AIzaSyCgebjp9UWGlH-gMBp0MVYJ8thoXqglt-Q",
@@ -17,7 +17,9 @@ const db = getDatabase();
 const auth = getAuth();
 const dbRef = ref(db, "/");
 let user;
-let currentChatId = null;
+let selfUsername = "";
+let chatOtherUsername = "";
+let chatRef = "";
 
 onAuthStateChanged(auth, (_user) => {
 	if (_user) {
@@ -41,6 +43,9 @@ function GetChats() {
 	let chatIds = [];
 	get(child(dbRef, "chats/")).then((snapshot) => {
 		let currentUid = user.uid;
+		get(child(dbRef, "users/" + currentUid)).then((snapshot) => {
+			selfUsername = snapshot.val().username;
+		});
 		snapshot.forEach((childSnapshot) => {
 			let key = childSnapshot.key;
 			key = key.split(",");
@@ -59,10 +64,11 @@ function GetChats() {
 		});
 		const promises = [];
 		paths.forEach((path) => {
+			console.log(path);
 			promises.push(new Promise((resolve) => {
-				const reference = ref(db, path);
-				get(child(reference, "/username/")).then((snapshot) => {
-                    const data = snapshot.val();
+				const reference = ref(db, "users/" + path);
+				get(reference).then((snapshot) => {
+                    const data = snapshot.val().username;
 					resolve(data);
                 });
 			}));
@@ -76,13 +82,24 @@ function GetChats() {
 			for (let i = 0; i < buttons.length; i++) {
 				$(buttons[i]).on("click", function() {
 					const path =$(this).attr("data-chatId");
-					const chatRef = ref(db, "chats/" + path + "/messages/");
+					chatRef = "chats/" + path + "/messages/";
+					chatOtherUsername = $(this).text();
 					// add new event listener
-					onValue(chatRef, (snapshot) => {
+					onValue(ref(db, chatRef), (snapshot) => {
+						let messageBox = $(".messageBox");
+						messageBox.empty();
 						snapshot.forEach((msgContainer) => {
 							console.log("Message timestamp: " + msgContainer.key);
-							console.log("Message: " + msgContainer.child("message").val());
-							console.log("User: " + GetUsername(msgContainer.child("from")));
+							console.log("Message: " + msgContainer.val().message);
+							let sentUser = msgContainer.val().from;
+							if (sentUser === user.uid) {
+								sentUser = selfUsername;
+							}
+							else {
+								sentUser = chatOtherUsername;
+							}
+							console.log("Sender: " + sentUser);
+							messageBox.append('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
 						})
 
 					})
@@ -95,16 +112,19 @@ function GetChats() {
 		console.log(error);
 	})
 }
-function LoadChat(chatId) {
-	currentChatId = chatId;
+
+function Send() {
 	console.log("reached");
+	const timeSent = Date.now();
+	console.log(timeSent)
+	const message = $("#message").val();
+	$("#message").val("");
+	if (chatRef !== "") {
+		set(ref(db, chatRef + "/" + timeSent), {
+			from: user.uid,
+			message: message,
+		})
+	}
 }
 
-function GetUsername(userid) {
-	const reference = ref(db, "users/" + userid + "/")
-	get(child(reference, "/username/")).then((snapshot) => {
-		return snapshot.val();
-	});
-}
-
-window.LoadChat = LoadChat;
+window.Send = Send;
