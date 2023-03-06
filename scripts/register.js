@@ -16,7 +16,7 @@ initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth();
 
-function Login() {
+function Login(email, password) {
     setPersistence(auth, browserLocalPersistence).then(() => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -70,7 +70,7 @@ function CreateUser() {
                 username: username,
                 email: email,
             })
-            Login();
+            Login(email, password);
         })
         .catch ((error) => {
             const errorCode = error.code;
