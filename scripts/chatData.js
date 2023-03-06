@@ -99,7 +99,7 @@ function GetChats() {
 								sentUser = chatOtherUsername;
 							}
 							console.log("Sender: " + sentUser);
-							messageBox.append('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
+							messageBox.prepend('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
 						})
 
 					})
