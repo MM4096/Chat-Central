@@ -1,5 +1,6 @@
 body {
     background-color: #00004b;
+    margin: 0;
 }
 
 button {
@@ -99,8 +100,9 @@ a:hover {
 }
 
 .chat {
-    position: relative;
-    float: right;
+    position: absolute;
+    right: 0;
+    height: 100vh;
 }
 
 .chat > * {
