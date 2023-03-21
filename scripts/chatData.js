@@ -64,7 +64,6 @@ function GetChats() {
 		});
 		const promises = [];
 		paths.forEach((path) => {
-			console.log(path);
 			promises.push(new Promise((resolve) => {
 				const reference = ref(db, "users/" + path);
 				get(reference).then((snapshot) => {
@@ -81,6 +80,10 @@ function GetChats() {
 			let buttons = $(".chatButtons");
 			for (let i = 0; i < buttons.length; i++) {
 				$(buttons[i]).on("click", function() {
+					let chatButton = $("#chatButton");
+					$("#message").attr("placeholder", "Enter your message...");
+					chatButton.text("Send");
+					chatButton.attr("onclick", "Send()");
 					const path =$(this).attr("data-chatId");
 					chatRef = "chats/" + path + "/messages/";
 					chatOtherUsername = $(this).text();
@@ -90,8 +93,6 @@ function GetChats() {
 							let messageBox = $(".messageBox");
 							messageBox.empty();
 							snapshot.forEach((msgContainer) => {
-								console.log("Message timestamp: " + msgContainer.key);
-								console.log("Message: " + msgContainer.val().message);
 								let sentUser = msgContainer.val().from;
 								if (sentUser === user.uid) {
 									sentUser = selfUsername;
@@ -128,4 +129,50 @@ function Send() {
 	}
 }
 
+function AddFriend() {
+	let userList = $(".chatButtons");
+	let friendList = [];
+	for (let i = 0; i < userList.length; i++) {
+		friendList.push(userList.eq(i).text());
+	}
+	let friendName = $("#message").val();
+	get(child(dbRef, "/users/")).then((snapshot) => {
+		let success = false;
+		snapshot.forEach((childSnapshot) => {
+			const childData = childSnapshot.val();
+			if (childData.username === friendName) {
+				if (childSnapshot.key === user.uid) {
+					window.alert("You can't add yourself as a friend!");
+					success = true;
+				}
+				else if (friendList.includes(friendName)) {
+					window.alert("You are already friends with " + friendName + "!");
+					success = true;
+				}
+				else {
+					set(ref(db, "requests/" + user.uid + "/friends/" + childSnapshot.key)).then(() => {
+
+					});
+					success = true;
+					window.alert("Friend request sent!");
+				}
+			}
+		});
+		if (!success) {
+			window.alert("Username: " + friendName + " not found. Check your capitalization and spelling.");
+		}
+	});
+}
+
+function FriendPage() {
+	let chatButton = $("#chatButton");
+	chatRef = "";
+	$(".messageBox").empty();
+	$("#message").attr("placeholder", "Add a friend...");
+	chatButton.text("Add Friend");
+	chatButton.attr("onclick", "AddFriend()");
+}
+
 window.Send = Send;
+window.AddFriend = AddFriend;
+window.FriendPage = FriendPage;

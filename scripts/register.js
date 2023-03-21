@@ -1,6 +1,6 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
 import { getAuth, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
     apiKey: "AIzaSyCgebjp9UWGlH-gMBp0MVYJ8thoXqglt-Q",
@@ -14,6 +14,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getDatabase();
+const dbRef = ref(db, "/");
 const auth = getAuth();
 
 function Login(email, password) {
@@ -62,36 +63,49 @@ function CreateUser() {
         $("#error").text("Error: Your passwords don't match");
     }
     else {
-        createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            $("#error").text("");
-            set(ref(db, "users/" + user.uid), {
-                username: username,
-                email: email,
-            })
-            Login(email, password);
-        })
-        .catch ((error) => {
-            const errorCode = error.code;
-            let errorMessage;
-            switch (errorCode) {
-                case "auth/invalid-email":
-                    errorMessage = "Email was invalid";
-                break;
-                case "auth/weak-password":
-                    errorMessage = "Password must be at least 6 characters long";
-                break;
-                case "auth/email-already-in-use":
-                    errorMessage = "Email is already in use";
-                break;
-                default:
-                    errorMessage = "An unknown error occured"
-                    console.log(errorMessage);
-                break;
+        get(child(dbRef, "/users/")).then((snapshot) => {
+            let success = true;
+            snapshot.forEach((childSnapshot) => {
+                const childData = childSnapshot.val();
+                if (childData.username === username) {
+                    $("#error").text("Error: Username is already in use");
+                    success = false;
+                }
+            });
+            if (success) {
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        $("#error").text("");
+                        set(ref(db, "users/" + user.uid), {
+                            username: username,
+                            email: email,
+                        })
+                        Login(email, password);
+                    })
+                    .catch ((error) => {
+                        const errorCode = error.code;
+                        let errorMessage;
+                        switch (errorCode) {
+                            case "auth/invalid-email":
+                                errorMessage = "Email was invalid";
+                                break;
+                            case "auth/weak-password":
+                                errorMessage = "Password must be at least 6 characters long";
+                                break;
+                            case "auth/email-already-in-use":
+                                errorMessage = "Email is already in use";
+                                break;
+                            default:
+                                errorMessage = "An unknown error occured"
+                                console.log(errorMessage);
+                                break;
+                        }
+                        $("#error").text("Error: " + error.message);
+                    });
             }
-            $("#error").text("Error: " + error.message);
-        }) 
+        });
+
     }
 }
 
