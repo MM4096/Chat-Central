@@ -86,22 +86,23 @@ function GetChats() {
 					chatOtherUsername = $(this).text();
 					// add new event listener
 					onValue(ref(db, chatRef), (snapshot) => {
-						let messageBox = $(".messageBox");
-						messageBox.empty();
-						snapshot.forEach((msgContainer) => {
-							console.log("Message timestamp: " + msgContainer.key);
-							console.log("Message: " + msgContainer.val().message);
-							let sentUser = msgContainer.val().from;
-							if (sentUser === user.uid) {
-								sentUser = selfUsername;
-							}
-							else {
-								sentUser = chatOtherUsername;
-							}
-							console.log("Sender: " + sentUser);
-							messageBox.prepend('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
-						})
-
+						if (chatRef === "chats/" + path + "/messages/") {
+							let messageBox = $(".messageBox");
+							messageBox.empty();
+							snapshot.forEach((msgContainer) => {
+								console.log("Message timestamp: " + msgContainer.key);
+								console.log("Message: " + msgContainer.val().message);
+								let sentUser = msgContainer.val().from;
+								if (sentUser === user.uid) {
+									sentUser = selfUsername;
+								}
+								else {
+									sentUser = chatOtherUsername;
+								}
+								console.log("Sender: " + sentUser);
+								messageBox.prepend('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
+							})
+						}
 					})
 				});
 			}
