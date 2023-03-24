@@ -36,6 +36,13 @@ $(document).ready(function () {
 
 const LoadEventHandlers = async () => {
 	const result = await GetChats();
+	const result2 = await GetRequests();
+}
+
+function GetRequests() {
+	get(child(dbRef, "/requests/")).then((snapshot) => {
+		console.log(snapshot.val());
+	})
 }
 
 function GetChats() {
@@ -150,11 +157,12 @@ function AddFriend() {
 					success = true;
 				}
 				else {
-					set(ref(db, "requests/" + user.uid + "/friends/" + childSnapshot.key)).then(() => {
-
+					set(ref(db, "requests/" + friendName), {
+						from: selfUsername,
+					}).then(() => {
+						window.alert("Friend request sent!");
 					});
 					success = true;
-					window.alert("Friend request sent!");
 				}
 			}
 		});
