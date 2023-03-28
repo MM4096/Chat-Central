@@ -1,6 +1,6 @@
 import { initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
 import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
-import { child, get, getDatabase, onValue, ref, set } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import { child, get, getDatabase, onValue, ref, set, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
 	apiKey: "AIzaSyCgebjp9UWGlH-gMBp0MVYJ8thoXqglt-Q",
@@ -20,6 +20,7 @@ let user;
 let selfUsername = "";
 let chatOtherUsername = "";
 let chatRef = "";
+let isInChat = false;
 
 onAuthStateChanged(auth, (_user) => {
 	if (_user) {
@@ -36,12 +37,45 @@ $(document).ready(function () {
 
 const LoadEventHandlers = async () => {
 	const result = await GetChats();
-	const result2 = await GetRequests();
+	// gets new requests
+	let requestRef = "/requests/";
+	onValue(ref(db, requestRef), (snapshot) => {
+		if (!isInChat) {
+			$(".messageBox").empty();
+			snapshot.forEach((child) => {
+				if (child.key === selfUsername) {
+					let from = child.val().from;
+					// only gets relative path
+					let path = child.ref.toString().replace("https://chatcentral-89222-default-rtdb.asia-southeast1.firebasedatabase.app/", "");
+					$(".messageBox").append("<div class='request'>\n" +
+						"                <p>" + from + " wants to be friends with you!</p>\n" +
+						"                <button onclick='Accept(\"" + path + "\")'>Accept</button>\n" +
+						"                <button onclick='Deny(\"" + path + "\")'>Deny</button>\n" +
+						"            </div>")
+				}
+			});
+		}
+	});
+	// TODO: changes for chats
 }
 
 function GetRequests() {
 	get(child(dbRef, "/requests/")).then((snapshot) => {
-		console.log(snapshot.val());
+		console.log(selfUsername);
+		snapshot.forEach((child) => {
+			if (child.key === selfUsername) {
+				let from = child.val().from;
+				// only gets relative path
+				let path = child.ref.toString().replace("https://chatcentral-89222-default-rtdb.asia-southeast1.firebasedatabase.app/", "");
+
+
+				$(".messageBox").append("<div class='request'>\n" +
+					"                <p>" + from + " wants to be friends with you!</p>\n" +
+					"                <button onclick='Accept(\"" + path + "\")'>Accept</button>\n" +
+					"                <button onclick='Deny(\"" + path + "\")'>Deny</button>\n" +
+					"            </div>")
+			}
+		})
 	})
 }
 
@@ -87,6 +121,7 @@ function GetChats() {
 			let buttons = $(".chatButtons");
 			for (let i = 0; i < buttons.length; i++) {
 				$(buttons[i]).on("click", function() {
+					isInChat = true;
 					let chatButton = $("#chatButton");
 					$("#message").attr("placeholder", "Enter your message...");
 					chatButton.text("Send");
@@ -111,9 +146,10 @@ function GetChats() {
 								messageBox.prepend('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
 							})
 						}
-					})
+					});
 				});
 			}
+			GetRequests();
 		});
 
 	})
@@ -158,6 +194,7 @@ function AddFriend() {
 				}
 				else {
 					set(ref(db, "requests/" + friendName), {
+						sUid: user.uid,
 						from: selfUsername,
 					}).then(() => {
 						window.alert("Friend request sent!");
@@ -179,8 +216,32 @@ function FriendPage() {
 	$("#message").attr("placeholder", "Add a friend...");
 	chatButton.text("Add Friend");
 	chatButton.attr("onclick", "AddFriend()");
+	isInChat = false;
+}
+
+function Deny(path) {
+	let delRef = ref(db, path);
+	console.log(delRef);
+	remove(delRef).then(() => {
+		console.log("Request denied");
+	});
+}
+
+function Accept(path) {
+	let pathRef = ref(db, path);
+	get(child(dbRef, path)).then((snapshot) => {
+		console.log(snapshot.val());
+		set(ref(db, "chats/" + user.uid + "," + snapshot.val().sUid), {
+			started: true,
+		});
+	});
+	remove(pathRef).then(() => {
+		console.log("Request accepted");
+	});
 }
 
 window.Send = Send;
 window.AddFriend = AddFriend;
 window.FriendPage = FriendPage;
+window.Accept = Accept;
+window.Deny = Deny;
