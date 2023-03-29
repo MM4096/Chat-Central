@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="userList" id="userList">
-        <button onclick="FriendPage()">Friend List</button>
+        <button onclick="FriendPage()" class="friendButton selectedUser">Friend List</button>
     </div>
 
     <div class="chat" id="chat">
@@ -19,7 +19,7 @@
 
         </div>
         <input id="message" placeholder="Add a friend..." autocomplete="off">
-        <button onclick="AddFriend()" id="chatButton">Add</button>
+        <button onclick="AddFriend()" id="chatButton">Add Friend</button>
     </div>
 
     <script src="scripts/chatData.js" type="module"></script>

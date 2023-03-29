@@ -1,6 +1,6 @@
 import { initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"
 import { getAuth, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"
-import { child, get, getDatabase, onValue, ref, set, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
+import { child, get, getDatabase, onValue, ref, set, remove, onChildAdded } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"
 
 const firebaseConfig = {
 	apiKey: "AIzaSyCgebjp9UWGlH-gMBp0MVYJ8thoXqglt-Q",
@@ -21,6 +21,7 @@ let selfUsername = "";
 let chatOtherUsername = "";
 let chatRef = "";
 let isInChat = false;
+let firstRun = true;
 
 onAuthStateChanged(auth, (_user) => {
 	if (_user) {
@@ -56,7 +57,13 @@ const LoadEventHandlers = async () => {
 			});
 		}
 	});
-	// TODO: changes for chats
+	let chatRef = "/chats/";
+	onChildAdded(ref(db, chatRef), (snapshot) =>{
+		if (!firstRun) {
+			$(".userList").empty().append("<button onClick=\"FriendPage()\">Friend List</button>");
+			GetChats();
+		}
+	});
 }
 
 function GetRequests() {
@@ -121,6 +128,11 @@ function GetChats() {
 			let buttons = $(".chatButtons");
 			for (let i = 0; i < buttons.length; i++) {
 				$(buttons[i]).on("click", function() {
+					$(".userList > *").each(function() {
+						$(this).removeClass("selectedUser");
+						console.log("removed")
+					});
+					$(this).addClass("selectedUser");
 					isInChat = true;
 					let chatButton = $("#chatButton");
 					$("#message").attr("placeholder", "Enter your message...");
@@ -149,7 +161,10 @@ function GetChats() {
 					});
 				});
 			}
-			GetRequests();
+			if (firstRun) {
+				GetRequests();
+				firstRun = false;
+			}
 		});
 
 	})
@@ -198,6 +213,7 @@ function AddFriend() {
 						from: selfUsername,
 					}).then(() => {
 						window.alert("Friend request sent!");
+						$("#message").val("");
 					});
 					success = true;
 				}
@@ -210,6 +226,10 @@ function AddFriend() {
 }
 
 function FriendPage() {
+	$(".userList > *").each(function() {
+		$(this).removeClass("selectedUser");
+	});
+	$(".friendButton").addClass("selectedUser");
 	let chatButton = $("#chatButton");
 	chatRef = "";
 	$(".messageBox").empty();
