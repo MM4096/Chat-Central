@@ -7,10 +7,6 @@ button {
     border-radius: 25px;
 }
 
-input {
-    border-radius: 20px;
-}
-
 .loginPage {
     text-align: center;
 }
@@ -236,10 +232,15 @@ a:hover {
         width: 80%;
         height: 5%;
         font-size: 150%;
+        margin-left: 5px;
+    }
+
+    .chat > * {
+        vertical-align: middle;
     }
 
     .chat > button {
-        width: 18%;
+        width: 15%;
         height: 5%;
         padding: 0;
     }
@@ -305,7 +306,7 @@ a:hover {
     }
 
     .chat > input {
-        width: 85%;
+        width: 83%;
         height: 5%;
         font-size: 150%;
     }

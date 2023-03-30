@@ -11,6 +11,10 @@ function SetWindowDimensions() {
 }
 
 $(document).ready(function() {
+    ShowHide();
+});
+
+function ShowHide() {
     SetWindowDimensions();
     if (WindowDimensions.width < 600) {
         $("#chat").hide();
@@ -22,33 +26,36 @@ $(document).ready(function() {
         $("#userList").show();
         $("#back").hide();
     }
-});
+}
 
 $(window).resize(function() {
+    let bWidth = WindowDimensions.width;
     SetWindowDimensions();
-    if (WindowDimensions.width < 600) {
-        $("#chat").hide();
-        $("#userList").show();
-        $("#back").show();
+    if (bWidth > 600) {
+        ShowHide();
     }
-    else {
-        $("#chat").show();
-        $("#userList").show();
-        $("#back").hide();
+    else if (WindowDimensions.width > 600) {
+        ShowHide();
     }
 });
 
-function OpenChat(chatId) {
+function OpenChat() {
     if (WindowDimensions.width < 600) {
         $("#chat").show();
         $("#userList").hide();
     }
-    LoadChat(chatId);
 }
 
 function Back() {
     if (WindowDimensions.width < 600) {
         $("#chat").hide();
         $("#userList").show();
+    }
+}
+
+function ShowFriends() {
+    if (WindowDimensions.width < 600) {
+        $("#chat").show();
+        $("#userList").hide();
     }
 }

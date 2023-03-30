@@ -36,8 +36,14 @@ $(document).ready(function () {
 	LoadEventHandlers();
 });
 
+$("#message").on("keypress", function (e) {
+    if (e.which === 13) {
+        $("#chatButton").trigger("click");
+    }
+});
+
 const LoadEventHandlers = async () => {
-	const result = await GetChats();
+	GetChats();
 	// gets new requests
 	let requestRef = "/requests/";
 	onValue(ref(db, requestRef), (snapshot) => {
@@ -123,7 +129,7 @@ function GetChats() {
 
 		Promise.all(promises).then((results) => {
 			results.forEach((result, index) => {
-				$("#userList").append('<button class="chatButtons" data-chatId="' + chatIds[index] + '">' + result + '</button>');
+				$("#userList").append('<button class="chatButtons" data-chatId="' + chatIds[index] + '" onclick="OpenChat()">' + result + '</button>');
 			});
 			let buttons = $(".chatButtons");
 			for (let i = 0; i < buttons.length; i++) {
@@ -202,10 +208,12 @@ function AddFriend() {
 				if (childSnapshot.key === user.uid) {
 					window.alert("You can't add yourself as a friend!");
 					success = true;
+                    $("#message").val("");
 				}
 				else if (friendList.includes(friendName)) {
 					window.alert("You are already friends with " + friendName + "!");
 					success = true;
+                    $("#message").val("");
 				}
 				else {
 					set(ref(db, "requests/" + friendName), {
@@ -213,7 +221,7 @@ function AddFriend() {
 						from: selfUsername,
 					}).then(() => {
 						window.alert("Friend request sent!");
-						$("#message").val("");
+                        $("#message").val("");
 					});
 					success = true;
 				}
@@ -237,6 +245,7 @@ function FriendPage() {
 	chatButton.text("Add Friend");
 	chatButton.attr("onclick", "AddFriend()");
 	isInChat = false;
+	ShowFriends();
 }
 
 function Deny(path) {
