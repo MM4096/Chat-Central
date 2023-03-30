@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Central</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="userList" id="userList">
+        <button onclick="FriendPage()" class="friendButton selectedUser">Friend List</button>
+    </div>
+
+    <div class="chat" id="chat">
+        <button id="back" onclick="Back()">Back</button>
+        <div class="messageBox">
+
+        </div>
+        <input id="message" placeholder="Add a friend..." autocomplete="off">
+        <button onclick="AddFriend()" id="chatButton">Add Friend</button>
+    </div>
+
+    <script src="scripts/chatData.js" type="module"></script>
+    <script src="scripts/chatPhone.js"></script>
+</body>
+</html>

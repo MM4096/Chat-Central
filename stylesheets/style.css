@@ -1,0 +1,477 @@
+body {
+    background-color: #00004b;
+    margin: 0;
+}
+
+button {
+    border-radius: 25px;
+}
+
+.loginPage {
+    text-align: center;
+}
+
+/* All contents are centre aligned, and text is white */
+.loginPage > * {
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.loginPage > input {
+    border: solid 1px #333399;
+    background-color: #4444aa;
+}
+
+button {
+    color: #ffffff;
+    background-color: #4444aa;
+    border: solid 1px #333399;
+}
+
+button:active {
+    background-color: #6666cc;
+}
+
+button:hover {
+    background-color: #6666cc;
+}
+
+.indexPage > * {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: #ffffff;
+}
+
+.indexPage > h1 {
+    font-size: 75px;
+}
+
+.indexPage > p {
+    font-size: 25px;
+}
+
+.navbar {
+    margin-top: 20px;
+    text-align: left;
+    display: inline-block;
+    width: 90%;
+    height: 70px;
+}
+
+.navbar > button {
+    float: right;
+    height: inherit;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: 10px;
+}
+
+.navbar > img {
+    margin-left: 20px;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.error {
+    color: #ff0000;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.userList {
+    float: left;
+    height: 100%;
+}
+
+.userList > button {
+    width: 95%;
+}
+
+.chat {
+    position: absolute;
+    right: 0;
+    height: 100vh;
+}
+
+.chat > * {
+    display: inline-block;
+}
+
+.chat > #back {
+    width: 0;
+    height: 0;
+}
+
+.chat > input {
+    color: #ffffff;
+    border: solid 1px #333399;
+    background-color: #4444aa;
+}
+
+.messageBox {
+    /* overflow: auto adds a scrollbar */
+    overflow: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.selectedUser {
+    background-color: #7777dd;
+}
+
+.message {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.message:hover {
+    background-color: #11115b;
+}
+
+.request {
+    border: 1px solid #ffffff;
+    padding-left: 5px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.request:hover {
+    background-color: #11115b;
+}
+
+.request > * {
+    display: inline-block;
+}
+
+/* Making inputs italics for different browsers */
+::-webkit-input-placeholder {
+    font-style: italic;
+ }
+ :-moz-placeholder {
+    font-style: italic;  
+ }
+ ::-moz-placeholder {
+    font-style: italic;  
+ }
+ :-ms-input-placeholder {  
+    font-style: italic; 
+ }
+ ::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+ @media screen and (max-width: 600px) {
+    .loginPage > h1 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 40px;
+    }
+    .loginPage > input {
+        width: 80%;
+        font-size: 18px;
+        height: 50px;
+    }
+    .loginPage > button {
+        width: 50%;
+        font-size: 25px;
+    }
+    .loginPage > a {
+        font-size: 15px;
+    }
+
+    .indexPage > h1 {
+        font-size: 40px;
+    }
+
+    .indexPage > p {
+        width: 80%;
+        margin-left: 10%;
+        font-size: 20px;
+    }
+
+    .navbar {
+        height: 50px;
+    }
+
+    .navbar > button {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .userList {
+        width: 100%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 100%;
+        height: 99%;
+    }
+
+    .chat > #back {
+        width: 100px;
+        height: 50px;
+    }
+
+    .chat > input {
+        width: 80%;
+        height: 5%;
+        font-size: 150%;
+        margin-left: 5px;
+    }
+
+    .chat > * {
+        vertical-align: middle;
+    }
+
+    .chat > button {
+        width: 15%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: calc(95% - 50px);
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
+    }
+
+ }
+
+ @media screen and (min-width: 600px) {
+    .loginPage > h1 {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        font-size: 40px;
+    }
+    .loginPage > input {
+        width: 60%;
+        font-size: 18px;
+        height: 50px;
+    }
+    .loginPage > button {
+        width: 30%;
+        font-size: 25px;
+    }
+    .loginPage > a {
+        font-size: 15px;
+    }
+
+    .indexPage > h1 {
+        font-size: 50px;
+    }
+
+    .indexPage > p {
+        font-size: 25px;
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .userList {
+        width: 30%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 69%;
+        height: 99%;
+    }
+
+    .chat > input {
+        width: 83%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 13%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: 95%;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
+    }
+    
+  }
+
+  @media screen and (min-width: 992px) {
+    .loginPage > h1 {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        font-size: 40px;
+    }
+    .loginPage > input {
+        width: 60%;
+        font-size: 18px;
+        height: 50px;
+    }
+    .loginPage > button {
+        width: 50%;
+        font-size: 25px;
+    }
+    .loginPage > a {
+        font-size: 15px;
+    }
+
+    .indexPage > h1 {
+        font-size: 50px;
+    }
+
+    .indexPage > p {
+        font-size: 25px;
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .userList {
+        width: 25%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 74%;
+        height: 99%;
+    }
+
+    .chat > input {
+        width: 90%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 8%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: 95%;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
+    }
+    
+  }
+
+  @media screen and (min-width: 1200px) {
+    .loginPage > h1 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 50px;
+    }
+    .loginPage > input {
+        width: 50%;
+        font-size: 30px;
+        height: 75px;
+    }
+    .loginPage > button {
+        width: 50%;
+        height: 50px;
+    }
+    .loginPage > a {
+        font-size: 25px;
+    }
+
+    .indexPage > h1 {
+        font-size: 75px;
+    }
+
+    .indexPage > p {
+        font-size: 25px;
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .userList {
+        width: 20%;
+    }
+
+    .userList > button {
+        margin-left: 2.5%;
+        margin-top: 10px;
+        padding: 20px;
+    }
+
+    .chat {
+        width: 79%;
+        height: 99%;
+    }
+
+    .chat > input {
+        width: 90%;
+        height: 5%;
+        font-size: 150%;
+    }
+
+    .chat > button {
+        width: 8%;
+        height: 5%;
+        padding: 0;
+    }
+
+    .messageBox {
+        width: 100%;
+        height: 95%;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        width: 95%;
+    }
+
+    .message > * {
+        margin-left: 10px;
+    }
+  }
