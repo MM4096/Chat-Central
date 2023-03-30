@@ -173,10 +173,11 @@ function GetChats() {
 			}
 		});
 
-	})
+	}) /*
 	.catch((error) => {
 		console.log(error);
 	})
+	*/
 }
 
 function Send() {

@@ -306,9 +306,13 @@ a:hover {
     }
 
     .chat > input {
-        width: 83%;
+        width: 80%;
         height: 5%;
         font-size: 150%;
+    }
+
+    .chat > * {
+        vertical-align: middle;
     }
 
     .chat > button {
@@ -375,10 +379,11 @@ a:hover {
     .chat {
         width: 74%;
         height: 99%;
+        
     }
 
     .chat > input {
-        width: 90%;
+        width: 85%;
         height: 5%;
         font-size: 150%;
     }
