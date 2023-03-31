@@ -79,7 +79,6 @@ function CreateUser() {
                         $("#error").text("");
                         set(ref(db, "users/" + user.uid), {
                             username: username,
-                            email: email,
                         })
                         Login(email, password);
                     })
