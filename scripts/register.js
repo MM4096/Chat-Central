@@ -100,7 +100,7 @@ function CreateUser() {
                                 console.log(errorMessage);
                                 break;
                         }
-                        $("#error").text("Error: " + error.message);
+                        $("#error").text("Error: " + errorMessage);
                     });
             }
         });
