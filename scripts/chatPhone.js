@@ -4,8 +4,8 @@ class WindowDimensions {
 }
 
 function SetWindowDimensions() {
-    height = $(window).height();
-    width = $(window).width();
+    let height = $(window).height();
+    let width = $(window).width();
     WindowDimensions.width = width;
     WindowDimensions.height = height;
 }
@@ -29,6 +29,7 @@ function ShowHide() {
 }
 
 $(window).resize(function() {
+    // only resets page if viewport is resized from larger than 600px
     let bWidth = WindowDimensions.width;
     SetWindowDimensions();
     if (bWidth > 600) {

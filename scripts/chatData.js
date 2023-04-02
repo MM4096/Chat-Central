@@ -63,6 +63,7 @@ const LoadEventHandlers = async () => {
 			});
 		}
 	});
+	// gets new chats
 	let chatRef = "/chats/";
 	onChildAdded(ref(db, chatRef), (snapshot) =>{
 		if (!firstRun) {
@@ -74,7 +75,6 @@ const LoadEventHandlers = async () => {
 
 function GetRequests() {
 	get(child(dbRef, "/requests/")).then((snapshot) => {
-		console.log(selfUsername);
 		snapshot.forEach((child) => {
 			if (child.key === selfUsername) {
 				let from = child.val().from;
@@ -136,7 +136,6 @@ function GetChats() {
 				$(buttons[i]).on("click", function() {
 					$(".userList > *").each(function() {
 						$(this).removeClass("selectedUser");
-						console.log("removed")
 					});
 					$(this).addClass("selectedUser");
 					isInChat = true;
@@ -160,7 +159,6 @@ function GetChats() {
 								else {
 									sentUser = chatOtherUsername;
 								}
-								console.log("Sender: " + sentUser);
 								messageBox.prepend('<div class="message"><p>' + sentUser + ': ' + msgContainer.val().message + '</p></div>');
 							})
 						}
@@ -173,17 +171,15 @@ function GetChats() {
 			}
 		});
 
-	}) /*
+	})
 	.catch((error) => {
 		console.log(error);
 	})
-	*/
+
 }
 
 function Send() {
-	console.log("reached");
 	const timeSent = Date.now();
-	console.log(timeSent)
 	const message = $("#message").val();
 	$("#message").val("");
 	if (chatRef !== "") {
@@ -251,22 +247,20 @@ function FriendPage() {
 
 function Deny(path) {
 	let delRef = ref(db, path);
-	console.log(delRef);
 	remove(delRef).then(() => {
-		console.log("Request denied");
+		// request denied
 	});
 }
 
 function Accept(path) {
 	let pathRef = ref(db, path);
 	get(child(dbRef, path)).then((snapshot) => {
-		console.log(snapshot.val());
 		set(ref(db, "chats/" + user.uid + "," + snapshot.val().sUid), {
 			started: true,
 		});
 	});
 	remove(pathRef).then(() => {
-		console.log("Request accepted");
+		// request accepted
 	});
 }
 

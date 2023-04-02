@@ -17,6 +17,7 @@ const db = getDatabase();
 const auth = getAuth();
 
 onAuthStateChanged(auth, (user) => {
+    // if user is logged in, redirect to the chat page
   if (user) {
     console.log(user);
     window.location.href = "chat.html";

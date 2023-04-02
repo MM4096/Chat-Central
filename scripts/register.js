@@ -18,6 +18,7 @@ const dbRef = ref(db, "/");
 const auth = getAuth();
 
 function Login(email, password) {
+    // logs user in
     setPersistence(auth, browserLocalPersistence).then(() => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -73,15 +74,18 @@ function CreateUser() {
                 }
             });
             if (success) {
+                // creates user
                 createUserWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
                         $("#error").text("");
+                        // adds user to database
                         set(ref(db, "users/" + user.uid), {
                             username: username,
                         })
                         Login(email, password);
                     })
+                    // error handling
                     .catch ((error) => {
                         const errorCode = error.code;
                         let errorMessage;
@@ -96,7 +100,7 @@ function CreateUser() {
                                 errorMessage = "Email is already in use";
                                 break;
                             default:
-                                errorMessage = "An unknown error occured"
+                                errorMessage = "An unknown error occurred"
                                 console.log(errorMessage);
                                 break;
                         }

@@ -17,6 +17,7 @@ const db = getDatabase();
 const auth = getAuth();
 
 function Login() {
+    // login system
     let email = $("#email").val();
     let password = $("#password").val();
     setPersistence(auth, browserLocalPersistence).then(() => {
